@@ -71,7 +71,7 @@ jobs:
 
           # Speed comes from the PCH + /Z7 + per-file parallel tasks (set in mss32.vcxproj).
           msbuild mss32\mss32.vcxproj `
-            /t:Build /p:Configuration=Debug /p:Platform=Win32 /p:PlatformToolset=v143 `
+            /t:Build /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143 `
             /p:SolutionDir=$env:GITHUB_WORKSPACE\mss32\ `
             /p:MultiProcessorCompilation=false /p:UseMultiToolTask=true `
             /p:EnforceProcessCountAcrossBuilds=true /p:MinimalRebuild=false `
