@@ -48,6 +48,7 @@
 #include "unitstovalidate.h"
 #include "unitutils.h"
 #include "utils.h"
+#include "worldversion.h"
 #include <chrono>
 #include <filesystem>
 #include <process.h>
@@ -143,6 +144,10 @@ bool __fastcall midServerLogicSendObjectsChangesHooked(game::IMidMsgSender* this
 
     const auto serverLogic = castMidMsgSenderToMidServerLogic(thisptr);
     auto scenarioMap = CMidServerLogicApi::get().getObjectMap(serverLogic);
+    if (scenarioMap->addedObjects.length != 0 || scenarioMap->changedObjects.length != 0
+        || scenarioMap->objectsToErase.length != 0) {
+        bumpWorldVersion(); // safety net: any object add/change/erase flush
+    }
 
     if (gameSettings().modifiers.validateUnitsOnGroupChanged) {
         addValidatedUnitsToChangedObjects(scenarioMap);
@@ -225,6 +230,7 @@ bool __fastcall stackMoveHooked(game::CMidServerLogic** thisptr,
                                 const game::CMqPoint* endPoint)
 {
     using namespace game;
+    bumpWorldVersion();
 
 #if 0
     char message[256];

@@ -252,6 +252,7 @@
 #include "visitorcreatesite.h"
 #include "visitorcreatesitehooks.h"
 #include "visitors.h"
+#include "worldversion.h"
 #include "reviveattackhooks.h"
 #include <algorithm>
 #include <cstdint>
@@ -2348,6 +2349,7 @@ void __stdcall getStackFortRuinGroupForChangeHooked(game::IMidgardObjectMap* obj
                                                     game::CMidUnitGroup** result)
 {
     using namespace game;
+    bumpWorldVersion();
 
     auto group = getGroup(objectMap, objectId, true);
     if (group) {
@@ -2755,6 +2757,7 @@ bool __stdcall removeStackHooked(const game::CMidgardID* stackId,
                                  game::CScenarioVisitor* visitor)
 {
     using namespace game;
+    bumpWorldVersion();
 
     const CMidStack* stack{getStack(objectMap, stackId)};
     if (stack && stack->sourceTemplateId != emptyId) {
