@@ -61,6 +61,7 @@
 #include "unitview.h"
 #include "unitviewdummy.h"
 #include "utils.h"
+#include "worldversion.h"
 #include <mutex>
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/spdlog.h>
@@ -513,6 +514,10 @@ static void bindApi(sol::state& lua)
 
     lua.set_function("randomNumber", [](std::uint32_t maxValue) {
         return game::gameFunctions().generateRandomNumber(maxValue);
+    });
+
+    lua.set_function("worldVersion", []() -> std::uint64_t {
+        return hooks::worldVersion().load(std::memory_order_relaxed);
     });
 }
 
