@@ -8,15 +8,12 @@ namespace hooks {
 // Monotonic world version: incremented on world mutations that invalidate
 // Lua-side environment caches (stack moves, group changes, stack removal,
 // engine flushes of added/changed/erased objects).
-inline std::atomic<std::uint64_t>& worldVersion()
-{
-    static std::atomic<std::uint64_t> value{0};
-    return value;
-}
+// Defined in src/worldversion.cpp as a namespace-scope object: a function-local
+// static here would require a thread-safe-init guard on first call (dynamic
+// initialization, atomic ctor is constexpr only since C++20) which crashed the
+// process on the worker Lua thread during battle init (BUG-048).
+std::atomic<std::uint64_t>& worldVersion();
 
-inline void bumpWorldVersion()
-{
-    worldVersion().fetch_add(1, std::memory_order_relaxed);
-}
+void bumpWorldVersion();
 
 } // namespace hooks

@@ -604,6 +604,7 @@ call ..\buildDetours.bat ..\Detours
     <ClCompile Include="src\umattackhooks.cpp" />
     <ClCompile Include="src\usstackleader.cpp" />
     <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="src\worldversion.cpp" />
     <ClCompile Include="src\version.cpp" />
     <ClCompile Include="src\visitorcreatesite.cpp" />
     <ClCompile Include="src\visitorcreatesitehooks.cpp" />
