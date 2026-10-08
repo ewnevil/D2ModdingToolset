@@ -2184,6 +2184,10 @@ int __stdcall loadScenarioMapHooked(int a1,
                                     game::CMidStreamEnvFile* streamEnv,
                                     game::CMidgardScenarioMap* scenarioMap)
 {
+    // BUG-045 (MNS env_cache): scenario (re)load recreates all engine objects while
+    // ids/positions repeat — bump worldVersion so stale Lua cache entries become unreachable
+    bumpWorldVersion();
+
     stackTemplateCacheClear();
 
     const int result = getOriginalFunctions().loadScenarioMap(a1, streamEnv, scenarioMap);
@@ -2211,6 +2215,10 @@ bool __fastcall scenarioMapStreamHooked(game::CMidgardScenarioMap* scenarioMap,
                                         int /*%edx*/,
                                         game::IMidgardStreamEnv* streamEnv)
 {
+    // BUG-045 (MNS env_cache): scenario (re)load recreates all engine objects while
+    // ids/positions repeat — bump worldVersion so stale Lua cache entries become unreachable
+    bumpWorldVersion();
+
     bool result = getOriginalFunctions().scenarioMapStream(scenarioMap, streamEnv);
     if (result && streamEnv->vftable->readMode(streamEnv)) {
         // Write-mode validation is done in midUnitStreamHooked
