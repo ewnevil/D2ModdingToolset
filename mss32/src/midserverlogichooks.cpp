@@ -134,10 +134,6 @@ bool __fastcall midServerLogicSendObjectsChangesHooked(game::IMidMsgSender* this
 
     const auto serverLogic = castMidMsgSenderToMidServerLogic(thisptr);
     auto scenarioMap = CMidServerLogicApi::get().getObjectMap(serverLogic);
-    // BUG-048 (v3): любое отправленное изменение объектов = мутация мира. Чтения
-    // scenarioMap->addedObjects/changedObjects/objectsToErase удалены: в переходе
-    // «движение → бой» указатель может быть висячим (не null) — чтение роняло процесс.
-    bumpWorldVersion();
 
     if (userSettings().modifiers.validateUnitsOnGroupChanged) {
         addValidatedUnitsToChangedObjects(scenarioMap);
@@ -220,7 +216,6 @@ bool __fastcall stackMoveHooked(game::CMidServerLogic** thisptr,
                                 const game::CMqPoint* endPoint)
 {
     using namespace game;
-    bumpWorldVersion();
 
 #if 0
     char message[256];

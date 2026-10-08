@@ -36,7 +36,6 @@ void __fastcall cmdBattleStartMsgSerializeHooked(game::CCmdBattleStartMsg* thisp
                                                  int /*%edx*/,
                                                  game::CMqStream* stream)
 {
-    bumpWorldVersion(); // BUG-048 (battle): старт боя пересоздает объекты стеков — сброс кэша
     serializeMsgWithBattleMsgData((game::CNetMsg*)thisptr, &thisptr->battleMsgData,
                                   getOriginalFunctions().cmdBattleStartMsgSerialize, stream);
 }
